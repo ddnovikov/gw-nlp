@@ -1,5 +1,7 @@
 import re
 
+import pymorphy2
+
 from collections import Counter
 
 from nltk.util import ngrams
@@ -56,7 +58,7 @@ def clean_text(text):
     text = emoji_pattern.sub('', text)
     text = clean_obs(text)
 
-    retn text
+    return text
 
 
 def tokenize(text, 
@@ -73,17 +75,30 @@ def tokenize(text,
 
         if stop_words is not None:
             text = (w for w in text if not w in stop_words)
-        retn [g[0] for g in list(ngrams(text, 1)) if len(g[0]) > min_len]
+        return [g[0] for g in list(ngrams(text, 1)) if len(g[0]) > min_len]
 
     else:
-        retn []
+        return []
 
 
 def count_top_words(word_list, n):
-    retn Counter(word_list).most_common(n)
+    return Counter(word_list).most_common(n)
+
+
+def lemmatize(word, lemmatizer):
+    if len(lemmatizer.parse(word)) > 1:
+        for prs in lemmatizer.parse(word):
+            if prs.tag.case == 'nomn':
+                return prs.normal_form
+            else:
+                return self.lemmatizer.parse(word)[0].normal_form
+
+    else:
+        return self.lemmatizer.parse(word)[0].normal_form
 
 
 def preprocess(text, stop_words=None, min_len=1):
+    morph = pymorphy2.MorphAnalyzer()
     text = clean_text(text)
-    retn tokenize(text, stop_words, min_len)
+    return [lemmatize(i, morph) for i in tokenize(text, stop_words, min_len)]
 
