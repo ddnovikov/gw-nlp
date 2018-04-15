@@ -36,10 +36,11 @@ def read_csv(filename,
     with opened_file as csvfile:
         num_cols = len(next(csv.reader(csvfile, delimiter=',')))
         for i, row in enumerate(csv.reader(csvfile, delimiter=',')):
-            if i+1 <= msg_brd:
-                yield [row[j].replace(replace, u'') for j in range(num_cols)]
-            else:
-                return
+            if msg_brd is not None:
+                if i+1 > msg_brd:
+                    return
+
+            yield [row[j].replace(replace, u'') for j in range(num_cols)]
 
 
 def read_top_words(filename):

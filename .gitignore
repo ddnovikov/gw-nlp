@@ -103,8 +103,13 @@ venv.bak/
 # mypy
 .mypy_cache/
 
-# old code
-old/
-
 # idea
 .idea/
+
+# project-specific statements
+old/
+tg_data/
+bash_helpers/
+dss/
+mu/
+objs/
