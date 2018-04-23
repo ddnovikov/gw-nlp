@@ -33,7 +33,7 @@ def clean_obs(text):
                                    re.VERBOSE | re.UNICODE |
                                    re.DOTALL)
 
-    for ptrn in PATTERNS:
+    for ptrn in OBSC_PATTERNS:
         text = re.sub(ptrn, ' ', text, re.IGNORECASE |
                                        re.VERBOSE | re.UNICODE |
                                        re.DOTALL)
@@ -56,7 +56,7 @@ def clean_text(text):
     text = re.sub('.+[^а-яa-z\d\s]', '', text)  # other non-alphabetic
 
     text = emoji_pattern.sub('', text)
-    text = clean_obs(text)
+    # text = clean_obs(text)
 
     return text
 
